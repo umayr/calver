@@ -30,8 +30,6 @@ test: pretest vet lint
 
 .PHONY: build
 build: clean test
-	@echo "nothing to build yet"
-	@exit 1
 	@go build -x -ldflags ${LDFLAGS} -o bin/${BINARY} github.com/umayr/${BINARY}/cmd/${BINARY}
 
 .PHONY: fmt
