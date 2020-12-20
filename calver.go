@@ -8,15 +8,24 @@ import (
 )
 
 const (
-	FullYear    = "YYYY"
-	ShortYear   = "YY"
-	PaddedYear  = "0Y"
-	ShortMonth  = "MM"
+	// FullYear notation for CalVer which is YYYY
+	FullYear = "YYYY"
+	// ShortYear notation for CalVer which is YY
+	ShortYear = "YY"
+	// PaddedYear notation for CalVer which is 0Y
+	PaddedYear = "0Y"
+	// ShortMonth notation for CalVer which is MM
+	ShortMonth = "MM"
+	// PaddedMonth notation for CalVer which is 0M
 	PaddedMonth = "0M"
-	ShortWeek   = "WW"
-	PaddedWeek  = "0W"
-	ShortDay    = "DD"
-	PaddedDay   = "0D"
+	// ShortWeek notation for CalVer which is WW
+	ShortWeek = "WW"
+	// PaddedWeek notation for CalVer which is 0W
+	PaddedWeek = "0W"
+	// ShortDay notation for CalVer which is DD
+	ShortDay = "DD"
+	// PaddedDay notation for CalVer which is 0D
+	PaddedDay = "0D"
 )
 
 type segment int
@@ -215,6 +224,7 @@ func newFormat(raw string) (*format, error) {
 	return &format{major, minor, micro}, nil
 }
 
+// CalVer is the type to contain all information regarding current version
 type CalVer struct {
 	major     string
 	minor     string
@@ -247,6 +257,16 @@ func (c *CalVer) next(pre bool) (string, string, string, uint64) {
 	return c.format.major.conv(t), c.format.minor.conv(t), c.format.micro.conv(t), 0
 }
 
+// Release generates new release version and returns the string.
+// It calculates the next version using time.Now function, and in case of
+// multiple releases on the same day, it will bump up the `Iterations` for
+// instance:
+//		2020.12.12		->	2020.12.12-1
+//		2020.12.12-1	->	2020.12.12-2
+//		[..]
+//		2020.12.12-999	->	2020.12.12-1000
+// Furthermore, if the previous version was a prerelease with an iteration
+// then it will remove the prerelease modifier and keep the same version
 func (c *CalVer) Release() string {
 	c.major, c.minor, c.micro, c.increment = c.next(false)
 
@@ -255,6 +275,9 @@ func (c *CalVer) Release() string {
 	return c.String()
 }
 
+// PreRelease generates new prerelease version and returns the string.
+// It works same as Release but it suffixes each version with the provided
+// `modifier`
 func (c *CalVer) PreRelease() string {
 	c.major, c.minor, c.micro, c.increment = c.next(true)
 
@@ -299,6 +322,8 @@ func (c *CalVer) String() string {
 	return v
 }
 
+// New creates a new instance of CalVer using the provided format and modifier
+// which defaults to `dev`
 func New(format, modifier string) (*CalVer, error) {
 	if modifier == "" {
 		modifier = "dev"
@@ -312,6 +337,8 @@ func New(format, modifier string) (*CalVer, error) {
 	return &CalVer{modifier: modifier, format: f}, nil
 }
 
+// Parse takes raw version, tries to parse it into provided format and returns
+// the CalVer instance. It takes a modifier as well which default to `dev`
 func Parse(raw, format, modifier string) (*CalVer, error) {
 	c, err := New(format, modifier)
 	if err != nil {
@@ -341,6 +368,8 @@ func Parse(raw, format, modifier string) (*CalVer, error) {
 		c.increment = inc
 	}
 
+	// for now I'm only checking for `.` to verify if the format is valid which barely
+	// tells anything so this would be something I need to address later
 	count := strings.Count(c.format.String(), ".")
 	if strings.Count(parts[0], ".") != count {
 		return nil, fmt.Errorf("provided string doesn't match the format: %s", c.format)
