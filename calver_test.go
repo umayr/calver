@@ -970,6 +970,13 @@ func TestNew_DifferentWeek(t *testing.T) {
 	}
 }
 
+func TestNew_UnsupportedFormat(t *testing.T) {
+	_, err := New("YYYY.XX.HH", "")
+	if err == nil || err.Error() != "unsupported format: YYYY.XX.HH" {
+		t.Error("invalid format should not supported")
+	}
+}
+
 func TestParse(t *testing.T) {
 	c0, _ := Parse("2007.1.1", "YYYY.MM.DD", "")
 	if c0.String() != "2007.1.1" {

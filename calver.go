@@ -191,6 +191,18 @@ func (f format) String() string {
 	return v
 }
 
+var valid = [9]string{
+	FullYear,
+	ShortYear,
+	PaddedYear,
+	ShortMonth,
+	PaddedMonth,
+	ShortWeek,
+	PaddedWeek,
+	ShortDay,
+	PaddedDay,
+}
+
 func newFormat(raw string) (*format, error) {
 	parts := strings.Split(raw, ".")
 
@@ -200,6 +212,19 @@ func newFormat(raw string) (*format, error) {
 
 	if len(parts) > 3 {
 		return nil, fmt.Errorf("format could only consist three parts: major, minor and micro")
+	}
+
+	for _, p := range parts {
+		isValid := false
+		for _, v := range valid {
+			if v == p {
+				isValid = true
+			}
+		}
+
+		if !isValid {
+			return nil, fmt.Errorf("unsupported format: %s", raw)
+		}
 	}
 
 	major, err := newSegment(parts[0])
