@@ -725,7 +725,7 @@ func TestNew_DifferentModifier(t *testing.T) {
 func TestNew_DifferentDay(t *testing.T) {
 	n := 0
 	reset := mockNowFunc(func() time.Time {
-		return time.Date(2007, 2, 5 + n, 0, 0, 0, 0, time.UTC)
+		return time.Date(2007, 2, 5+n, 0, 0, 0, 0, time.UTC)
 	})
 	defer reset()
 
@@ -748,35 +748,35 @@ func TestNew_DifferentDay(t *testing.T) {
 		t.Errorf("release version should be %s but it was %s", v0, r0)
 	}
 
-	n += 1
+	n++
 
 	r1 := c.Release()
 	if r1 != v1 {
 		t.Errorf("release version should be %s but it was %s", v1, r1)
 	}
 
-	n += 1
+	n++
 
 	r2 := c.PreRelease()
 	if r2 != v2 {
 		t.Errorf("release version should be %s but it was %s", v2, r2)
 	}
 
-	n += 1
+	n++
 
 	r3 := c.Release()
 	if r3 != v3 {
 		t.Errorf("release version should be %s but it was %s", v3, r3)
 	}
 
-	n += 1
+	n++
 
 	r4 := c.PreRelease()
 	if r4 != v4 {
 		t.Errorf("release version should be %s but it was %s", v4, r4)
 	}
 
-	n += 1
+	n++
 
 	r5 := c.Release()
 	if r5 != v5 {
@@ -849,7 +849,7 @@ func TestNew_DifferentMonth(t *testing.T) {
 func TestNew_DifferentYear(t *testing.T) {
 	n := 0
 	reset := mockNowFunc(func() time.Time {
-		return time.Date(2007 + n, 2, 5, 0, 0, 0, 0, time.UTC)
+		return time.Date(2007+n, 2, 5, 0, 0, 0, 0, time.UTC)
 	})
 	defer reset()
 
@@ -872,35 +872,35 @@ func TestNew_DifferentYear(t *testing.T) {
 		t.Errorf("release version should be %s but it was %s", v0, r0)
 	}
 
-	n += 1
+	n++
 
 	r1 := c.Release()
 	if r1 != v1 {
 		t.Errorf("release version should be %s but it was %s", v1, r1)
 	}
 
-	n += 1
+	n++
 
 	r2 := c.PreRelease()
 	if r2 != v2 {
 		t.Errorf("release version should be %s but it was %s", v2, r2)
 	}
 
-	n += 1
+	n++
 
 	r3 := c.Release()
 	if r3 != v3 {
 		t.Errorf("release version should be %s but it was %s", v3, r3)
 	}
 
-	n += 1
+	n++
 
 	r4 := c.PreRelease()
 	if r4 != v4 {
 		t.Errorf("release version should be %s but it was %s", v4, r4)
 	}
 
-	n += 1
+	n++
 
 	r5 := c.Release()
 	if r5 != v5 {
