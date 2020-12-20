@@ -269,6 +269,13 @@ func (c *CalVer) next(pre bool) (string, string, string, uint64) {
 
 	date := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 
+	if c.date.IsZero() && c.major != "" && c.minor != "" {
+		// c.date is not populated when CalVer instance is created through Parse function
+		// and that's the only time when c.date would be empty but there would be a version
+		// store in the instance, so set the date before proceeding to generate next version
+		c.date = date
+	}
+
 	if date.Equal(c.date) {
 		if !pre && c.pre {
 			return c.major, c.minor, c.micro, c.increment
@@ -305,7 +312,6 @@ func (c *CalVer) Release() string {
 // `modifier`
 func (c *CalVer) PreRelease() string {
 	c.major, c.minor, c.micro, c.increment = c.next(true)
-
 	c.pre = true
 
 	return c.String()
