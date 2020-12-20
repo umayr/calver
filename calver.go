@@ -249,6 +249,26 @@ func newFormat(raw string) (*format, error) {
 	return &format{major, minor, micro}, nil
 }
 
+type version [3]string
+
+func (v version) eq(src version) bool {
+	for i, val := range v {
+		if val != src[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (v version) spread() (string, string, string) {
+	return v[0], v[1], v[2]
+}
+
+func newVersion(major, minor, micro string) version {
+	return version{major, minor, micro}
+}
+
 // CalVer is the type to contain all information regarding current version
 type CalVer struct {
 	major     string
@@ -258,7 +278,7 @@ type CalVer struct {
 	modifier  string
 	pre       bool
 	format    *format
-	date      time.Time
+	version   version
 }
 
 // this is for testing purpose only
@@ -267,16 +287,9 @@ var now = time.Now
 func (c *CalVer) next(pre bool) (string, string, string, uint64) {
 	t := now()
 
-	date := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
+	v := newVersion(c.format.major.conv(t), c.format.minor.conv(t), c.format.micro.conv(t))
 
-	if c.date.IsZero() && c.major != "" && c.minor != "" {
-		// c.date is not populated when CalVer instance is created through Parse function
-		// and that's the only time when c.date would be empty but there would be a version
-		// store in the instance, so set the date before proceeding to generate next version
-		c.date = date
-	}
-
-	if date.Equal(c.date) {
+	if v.eq(c.version) {
 		if !pre && c.pre {
 			return c.major, c.minor, c.micro, c.increment
 		}
@@ -284,9 +297,10 @@ func (c *CalVer) next(pre bool) (string, string, string, uint64) {
 		return c.major, c.minor, c.micro, c.increment + 1
 	}
 
-	c.date = date
+	c.version = v
 
-	return c.format.major.conv(t), c.format.minor.conv(t), c.format.micro.conv(t), 0
+	major, minor, micro := v.spread()
+	return major, minor, micro, 0
 }
 
 // Release generates new release version and returns the string.
@@ -414,6 +428,8 @@ func Parse(raw, format, modifier string) (*CalVer, error) {
 	c.major = major
 	c.minor = minor
 	c.micro = micro
+
+	c.version = newVersion(major, minor, micro)
 
 	return c, nil
 }

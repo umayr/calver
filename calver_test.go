@@ -1063,4 +1063,12 @@ func TestCalVer_PreRelease(t *testing.T) {
 	if r4 != v4 {
 		t.Errorf("prerelease version should be %s but it was %s", v4, r4)
 	}
+
+	// older date
+	p1, _ := Parse("2007.2.4-dev.4", "YYYY.MM.DD", "")
+
+	r5 := p1.PreRelease()
+	if r5 != v0 {
+		t.Errorf("prerelease version should be %s but it was %s", v0, r5)
+	}
 }
