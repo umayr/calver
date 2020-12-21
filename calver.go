@@ -8,23 +8,23 @@ import (
 )
 
 const (
-	// FullYear notation for CalVer which is YYYY
+	// FullYear notation for CalVer - 2006, 2016, 2106
 	FullYear = "YYYY"
-	// ShortYear notation for CalVer which is YY
+	// ShortYear notation for CalVer - 6, 16, 106
 	ShortYear = "YY"
-	// PaddedYear notation for CalVer which is 0Y
+	// PaddedYear notation for CalVer - 06, 16, 106
 	PaddedYear = "0Y"
-	// ShortMonth notation for CalVer which is MM
+	// ShortMonth notation for CalVer - 1, 2 ... 11, 12
 	ShortMonth = "MM"
-	// PaddedMonth notation for CalVer which is 0M
+	// PaddedMonth notation for CalVer - 01, 02 ... 11, 12
 	PaddedMonth = "0M"
-	// ShortWeek notation for CalVer which is WW
+	// ShortWeek notation for CalVer - 1, 2, 33, 52
 	ShortWeek = "WW"
-	// PaddedWeek notation for CalVer which is 0W
+	// PaddedWeek notation for CalVer - 01, 02, 33, 52
 	PaddedWeek = "0W"
-	// ShortDay notation for CalVer which is DD
+	// ShortDay notation for CalVer - 1, 2 ... 30, 31
 	ShortDay = "DD"
-	// PaddedDay notation for CalVer which is 0D
+	// PaddedDay notation for CalVer - 01, 02 ... 30, 31
 	PaddedDay = "0D"
 )
 
