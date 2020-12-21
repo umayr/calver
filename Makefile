@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 BINARY=calver
 
-VERSION=0.1.1
+VERSION=0.1.2
 BUILD_TIME=`date +%FT%T%z`
 
 BRANCH=`git rev-parse --abbrev-ref HEAD`

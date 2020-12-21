@@ -1,6 +1,6 @@
 {
   "name": "@umayr/calver",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Small utility to handle calendar versioning",
   "bin": {
     "calver": "./npm/run.js"
@@ -25,7 +25,7 @@
     "url": "https://github.com/umayr/calver/issues"
   },
   "homepage": "https://github.com/umayr/calver#readme",
-  "devDependencies": {
+  "dependencies": {
     "binary-install": "^0.1.0"
   }
 }
