@@ -15,14 +15,35 @@ var (
 )
 
 func init() {
-	usage := flag.Usage
-
 	flag.Usage = func() {
-		_, _ = fmt.Fprintf(os.Stderr, "%s is a small utility to handle calender versioning:\n\n", os.Args[0])
+		fmt.Fprint(os.Stderr, `calver is a small utility to handle calender versioning:
 
-		usage()
+Usage:
+  --format string
+		format to parse the provided version (default "YYYY.MM.DD")
+  --modifier string
+		modifier for prerelease versions (default "dev")
+  --pre-release
+		flag to create a prerelease
 
-		_, _ = fmt.Fprint(os.Stderr, "\nFor more information on Calender Versioning: https://calver.org\n")
+Example:
+  $ calver 2020.12.20
+  2020.12.20-1
+
+  $ calver 2020.12.20-1
+  2020.12.20-2
+
+  $ calver --pre-release 2020.12.20-2
+  2020.12.20-dev.3
+
+  $ calver --format YYYY.0W 2019.01
+  2020.52
+
+  $ calver --format YY.MM 19.01
+  20.12
+
+For more information about Calender Versioning, please visit https://calver.org
+`)
 	}
 
 	flag.Parse()
