@@ -1,0 +1,32 @@
+{
+  "name": "@umayr/calver",
+  "version": "0.1.0",
+  "description": "Small utility to handle calendar versioning",
+  "bin": {
+    "calver": "./npm/run.js"
+  },
+  "files": [
+    "npm/**/*"
+  ],
+  "scripts": {
+    "postinstall": "node ./npm/install.js",
+    "preinstall": "node ./npm/uninstall.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umayr/calver.git"
+  },
+  "keywords": [
+    "cli",
+    "calver"
+  ],
+  "author": "Umayr Shahid <umayr.shahid@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/umayr/calver/issues"
+  },
+  "homepage": "https://github.com/umayr/calver#readme",
+  "devDependencies": {
+    "binary-install": "^0.1.0"
+  }
+}
