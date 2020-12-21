@@ -111,9 +111,34 @@ func (s segment) conv(t time.Time) string {
 }
 
 func (s segment) parse(raw string) (string, error) {
+	errBadSegment := fmt.Errorf("provided string doesn't match the format segment: %s", s.String())
+
+	switch {
+	case s == segmentEmpty && raw == "":
+		return "", nil
+	case s == segmentEmpty && raw != "":
+		return "", errBadSegment
+	case s == segmentPaddedWeek || s == segmentShortWeek:
+		w, err := strconv.Atoi(raw)
+		if err != nil {
+			return "", errBadSegment
+		}
+		if w < 0 || w > 52 {
+			return "", errBadSegment
+		}
+
+		return raw, nil
+	case s == segmentShortYear:
+		_, err := strconv.Atoi(raw)
+		if err != nil {
+			return "", errBadSegment
+		}
+		return raw, nil
+	}
+
 	t, err := time.Parse(s.pattern(), raw)
 	if err != nil {
-		return "", fmt.Errorf("provided string doesn't match the format segment: %s", s.String())
+		return "", errBadSegment
 	}
 	return t.Format(s.pattern()), nil
 }
