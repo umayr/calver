@@ -1,6 +1,6 @@
 {
   "name": "@umayr/calver",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Small utility to handle calendar versioning",
   "bin": {
     "calver": "./npm/run.js"
