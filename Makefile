@@ -2,11 +2,14 @@
 SHELL := /bin/bash
 BINARY=calver
 
-VERSION=
+VERSION=0.1.0
 BUILD_TIME=`date +%FT%T%z`
 
 BRANCH=`git rev-parse --abbrev-ref HEAD`
 COMMIT=`git rev-parse --short HEAD`
+
+PLATFORMS=darwin linux windows
+ARCHITECTURES=386 amd64 arm
 
 LDFLAGS="-X ${BINARY}.version=${VERSION} -X ${BINARY}.buildtime=${BUILD_TIME} -X ${BINARY}.branch=${BRANCH} -X ${BINARY}.commit=${COMMIT}"
 
@@ -31,6 +34,14 @@ test: pretest vet lint
 .PHONY: build
 build: clean test
 	@go build -x -ldflags ${LDFLAGS} -o bin/${BINARY} github.com/umayr/${BINARY}/cmd/${BINARY}
+
+.PHONY: all
+all: clean test
+	$(foreach GOOS, $(PLATFORMS),\
+		$(foreach GOARCH, $(ARCHITECTURES),\
+			$(shell export GOOS=$(GOOS); export GOARCH=$(GOARCH); go build -x -ldflags ${LDFLAGS} -o bin/${BINARY}-${GOOS}-${GOARCH} github.com/umayr/${BINARY}/cmd/${BINARY})\
+		)\
+	)
 
 .PHONY: fmt
 fmt:
