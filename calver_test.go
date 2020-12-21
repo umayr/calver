@@ -1072,3 +1072,77 @@ func TestCalVer_PreRelease(t *testing.T) {
 		t.Errorf("prerelease version should be %s but it was %s", v0, r5)
 	}
 }
+
+func TestCalVer_Release(t *testing.T) {
+	reset := mockNowFunc(func() time.Time {
+		return time.Date(2007, 2, 5, 0, 0, 0, 0, time.UTC)
+	})
+	defer reset()
+
+	c, _ := New("YYYY.MM.DD", "")
+
+	const (
+		v0 = "2007.2.5"
+		v1 = "2007.2.5-1"
+		v2 = "2007.2.5-2"
+		v3 = "2007.2.5-3"
+		v4 = "2007.2.5-4"
+	)
+	r0 := c.Release()
+	if r0 != v0 {
+		t.Errorf("prerelease version should be %s but it was %s", v0, r0)
+	}
+
+	r1 := c.Release()
+	if r1 != v1 {
+		t.Errorf("prerelease version should be %s but it was %s", v1, r1)
+	}
+
+	r2 := c.Release()
+	if r2 != v2 {
+		t.Errorf("prerelease version should be %s but it was %s", v2, r2)
+	}
+
+	r3 := c.Release()
+	if r3 != v3 {
+		t.Errorf("prerelease version should be %s but it was %s", v3, r3)
+	}
+
+	r4 := c.Release()
+	if r4 != v4 {
+		t.Errorf("prerelease version should be %s but it was %s", v4, r4)
+	}
+
+	p, _ := Parse(v0, "YYYY.MM.DD", "")
+	if p.String() != v0 {
+		t.Errorf("prerelease version should be %s but it was %s", v0, p.String())
+	}
+
+	r1 = p.Release()
+	if r1 != v1 {
+		t.Errorf("prerelease version should be %s but it was %s", v1, r1)
+	}
+
+	r2 = p.Release()
+	if r2 != v2 {
+		t.Errorf("prerelease version should be %s but it was %s", v2, r2)
+	}
+
+	r3 = p.Release()
+	if r3 != v3 {
+		t.Errorf("prerelease version should be %s but it was %s", v3, r3)
+	}
+
+	r4 = p.Release()
+	if r4 != v4 {
+		t.Errorf("prerelease version should be %s but it was %s", v4, r4)
+	}
+
+	// older date
+	p1, _ := Parse("2007.2.4-4", "YYYY.MM.DD", "")
+
+	r5 := p1.Release()
+	if r5 != v0 {
+		t.Errorf("prerelease version should be %s but it was %s", v0, r5)
+	}
+}
