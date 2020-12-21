@@ -16,8 +16,8 @@ const ARCH_MAPPING = {
 };
 
 function getPlatform() {
-    const type = os.type();
-    const arch = os.arch();
+    const type = os.type().toLowerCase();
+    const arch = os.arch().toLowerCase();
 
     if (typeof PLATFORM_MAPPING[type] === 'undefined' || typeof ARCH_MAPPING[arch] === 'undefined') {
         throw new Error(`Unsupported platform: ${type} ${arch}`);
@@ -31,9 +31,9 @@ function getBinary() {
     const version = require('../package.json').version;
 
     const name = 'calver';
-    const url = `https://github.com/umayr/${name}/releases/download/v${version}/${name}-${os}-${arch}.tar.gz`;
+    const url = `https://github.com/umayr/${name}/releases/download/${version}/${name}-${os}-${arch}.tar.gz`;
 
-    return new Binary(url, {name});
+    return new Binary(name, url);
 }
 
 module.exports = getBinary;
