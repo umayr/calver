@@ -48,10 +48,10 @@ build: clean test
 all: clean test
 	$(foreach GOOS, $(PLATFORMS),\
 		$(foreach GOARCH, $(ARCHITECTURES),\
-			$(shell export GOOS=$(GOOS); export GOARCH=$(GOARCH); go build -x -ldflags ${LDFLAGS} -o bin/${BINARY}-${GOOS}-${GOARCH} github.com/umayr/${BINARY}/cmd/${BINARY})\
+			$(shell export GOOS=$(GOOS); export GOARCH=$(GOARCH); go build -x -ldflags ${LDFLAGS} -o bin/${BINARY}-${GOOS}-${GOARCH}/${BINARY} github.com/umayr/${BINARY}/cmd/${BINARY})\
 		)\
 	)
 
 .PHONY: tarball
 tarball: all
-	@for binary in $(shell ls ./bin); do tar -C ./bin -cvzf ./bin/$${binary}.tar.gz ./$${binary}; done
+	@for folder in $(shell ls ./bin); do tar -C ./bin/$${folder} -cvzf ./bin/$${folder}.tar.gz ./${BINARY}; done
