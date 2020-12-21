@@ -17,7 +17,7 @@ default: build
 
 .PHONY: clean
 clean:
-	@if [ -f ${BINARY} ] ; then rm ${BINARY} ; fi
+	@rm -rf ./bin
 
 .PHONY: pretest
 pretest:
@@ -27,9 +27,18 @@ pretest:
 vet:
 	@go vet
 
+.PHONY: lint
+lint:
+	@go get -v golang.org/x/lint/golint
+	@golint ./... | grep -v vendor/ | true
+
 .PHONY: test
 test: pretest vet lint
 	@go test -v -p=1
+
+.PHONY: fmt
+fmt:
+	@gofmt -w $$(find . -type f -name '*.go' -not -path "./vendor/*")
 
 .PHONY: build
 build: clean test
@@ -43,11 +52,6 @@ all: clean test
 		)\
 	)
 
-.PHONY: fmt
-fmt:
-	@gofmt -w $$(find . -type f -name '*.go' -not -path "./vendor/*")
-
-.PHONY: lint
-lint:
-	@go get -v golang.org/x/lint/golint
-	@golint ./... | grep -v vendor/ | true
+.PHONY: tarball
+tarball: all
+	@for binary in $(shell ls ${BIN_DIR}); do tar -C ./bin -cvzf ./bin/$${binary}.tar.gz ./$${binary}; done
