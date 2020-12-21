@@ -51,14 +51,19 @@ For more information about Calender Versioning, please visit https://calver.org
 
 func main() {
 	args := flag.Args()
+
+	var (
+		c   *calver.CalVer
+		err error
+	)
+
 	if len(args) == 0 {
-		flag.Usage()
-		os.Exit(1)
+		c, err = calver.New(*flagFormat, *flagModifier)
+	} else {
+		version := args[len(args)-1]
+
+		c, err = calver.Parse(version, *flagFormat, *flagModifier)
 	}
-
-	version := args[len(args)-1]
-
-	c, err := calver.Parse(version, *flagFormat, *flagModifier)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
