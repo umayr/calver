@@ -54,4 +54,4 @@ all: clean test
 
 .PHONY: tarball
 tarball: all
-	@for binary in $(shell ls ${BIN_DIR}); do tar -C ./bin -cvzf ./bin/$${binary}.tar.gz ./$${binary}; done
+	@for binary in $(shell ls ./bin); do tar -C ./bin -cvzf ./bin/$${binary}.tar.gz ./$${binary}; done
